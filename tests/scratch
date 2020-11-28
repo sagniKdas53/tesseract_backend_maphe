@@ -1,0 +1,13 @@
+        let templ = cv.imread(top_left);
+        let tempr = cv.imread(top_right);
+        let stats = cv.imread(ref)
+        var statscan = document.getElementById("canvasref");
+        var ctx = statscan.getContext("2d");
+        //console.log(req.rows);
+        //console.log(req.cols);
+        //reqcan.width = req.rows;
+        //reqcan.height = req.cols;
+        ctx.drawImage(ref,0,0)
+        let req = cv.imread(statscan)
+        //canvsd(document.getElementById("canvasTopr"),tempr)
+        //canvsd(document.getElementById("canvasTopl"),templ)
