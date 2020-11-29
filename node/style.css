@@ -38,7 +38,8 @@
 }
 
 .sizetem {
-    resize:auto;
+    max-width:2%;
+    max-height:2%;
     overflow-x: hidden;
     overflow-y: hidden;
     position: relative;
