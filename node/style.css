@@ -28,14 +28,6 @@
     border: 1px solid rgb(42, 182, 0);
 }
 
-.sizecan {
-    resize:auto;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    position: relative;
-    top : 20px;
-    border: 1px solid rgb(211, 173, 2)
-}
 
 .sizetem {
     max-width:2%;
@@ -43,8 +35,7 @@
     overflow-x: hidden;
     overflow-y: hidden;
     position: relative;
-    top : 20px;
-    border: 1px solid rgb(255, 0, 157)
+    border: 1px solid rgb(211, 173, 2)
 }
 
 .loader {
