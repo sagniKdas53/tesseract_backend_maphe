@@ -10,12 +10,6 @@ function makebox(tem, oCm, r, g, b) {
     console.log("Maxpoint", maxPoint, "Minpoint", minPoint);
     //rgb colour code is not working properly maybe colur space coverion is necessary
     cv.rectangle(oCm, minPoint, new cv.Point(minPoint.x + template.rows, minPoint.y + template.cols), new cv.Scalar(0,r,0,g,0,b), 2, cv.LINE_8, 0); //works well
-
-    //cv.rectangle(oCm, minPoint, new cv.Point(maxPoint.x + template.rows, maxPoint.y + template.cols), new cv.Scalar(0,0,0,g,0,b), 2, cv.LINE_8, 0);
-
-    //cv.rectangle(oCm, maxPoint, new cv.Point(maxPoint.x + template.rows, maxPoint.y + template.cols), new cv.Scalar(0,r,0,0,0,b), 2, cv.LINE_8, 0);
-
-    //cv.rectangle(oCm, maxPoint, new cv.Point(minPoint.x + template.rows, minPoint.y + template.cols), new cv.Scalar(0,r,0,g,0,0), 2, cv.LINE_8, 0);
     dst.delete();
     mask.delete();
 };
@@ -49,14 +43,14 @@ window.onload = function () {
     }, false);
     imgElement.onload = function () {
         let given_im = cv.imread(imgElement);
-        //makebox(reff, given_im, 127, 31, 244); //the stats should be - purple
-        //makebox(top_left, given_im, 31, 244, 127); // the back arrow should be - teal
-        //makebox(top_right, given_im, 245, 130, 32); // the lightning should be - orange
-        makebox(atta,given_im,255,255,255);
-        makebox(cd,given_im,255,255,255);
-        makebox(top_left_big,given_im,255,255,255);
-        makebox(sw,given_im,255,255,255);
-        makebox(top_right,given_im,255,255,255);
+        //makebox(reff, given_im, 127, 31, 244); //the stats should be - purple - hopeless won't work
+        //makebox(top_left, given_im, 31, 244, 127); // the back arrow should be - teal - works but sometimes
+        //makebox(top_right, given_im, 245, 130, 32); // the lightning should be - orange - fails drastically
+        //makebox(atta,given_im,255,255,255); // fails drastically
+        //makebox(cd,given_im,255,255,255); // fails drastically
+        makebox(top_left_big,given_im,255,255,255); //works
+        //makebox(sw,given_im,255,255,255); // fails drastically
+        // fails drastically means misses the region by a lot the plot still occures but not where it's needed
         cv.imshow('canvasOutput', given_im);
         given_im.delete();
     };
