@@ -5,18 +5,19 @@
     <meta charset="UTF-8">
     <title>Tesseract.js Offline</title>
     <link rel="stylesheet" href="../node/style.css">
-    <script src="../node_modules/tesseract.js/dist/tesseract.min.js"></script>
-    <script async src="../node/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
-    <script src="../node/detector.js"></script>
     <script>
         function onOpenCvReady() {
             document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
         }
     </script>
+    <script src="../node_modules/tesseract.js/dist/tesseract.min.js"></script>
+    <script async src="../node/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+    <script src="../node/detector.js"></script>
 </head>
 
 <body>
     <div>
+        <h1>Detector for E7</h1>
         <h3 id="status" style="width:100%">OpenCV.js is loading...</h3>
     </div>
     <div class="img-can">
@@ -38,15 +39,16 @@
         <div class="loader" id="loader"></div>
     </div>
     <div>
+        <h1>The Templates and canvases:</h1>
         <!--Local files can be used but the problem is the cross contamiation of canvas 
         to prevent that i need to use the address of a local server to query
-        if cross contamition can be stopped them replacing "http://192.168.0.10:3000" with just ".."
+        if cross contamition can be stopped them replacing "http://192.168.0.10:8080" with just ".."
         can make things work-->
-        <img class="sizetem" id="Topl" alt="top_left" src="http://192.168.0.10:3000/images/templates/top_left.jpg" />
+        <img class="sizetem" id="Topl" alt="top_left" src="http://192.168.0.10:8080/images/templates/top_left.jpg" />
         <canvas class="sizecan" id="cTopl"></canvas>
-        <img class="sizetem" id="Topr" alt="top_right" src="http://192.168.0.10:3000/images/templates/top_right.jpg" />
+        <img class="sizetem" id="Topr" alt="top_right" src="http://192.168.0.10:8080/images/templates/top_right.jpg" />
         <canvas class="sizecan" id="cTopr"></canvas>
-        <img class="sizetem" id="ref" alt="reee" src="http://192.168.0.10:3000/images/templates/necessary_col.jpg">
+        <img class="sizetem" id="ref" alt="reee" src="http://192.168.0.10:8080/images/templates/necessary_col.jpg">
         <canvas class="sizecan" id="cref"></canvas>
     </div>
 </body>

@@ -29,8 +29,7 @@
 }
 
 .sizecan {
-    height: 20%;
-    width: 20%;
+    resize:auto;
     overflow-x: hidden;
     overflow-y: hidden;
     position: relative;
@@ -39,8 +38,7 @@
 }
 
 .sizetem {
-    height: 20%;
-    width: 20%;
+    resize:auto;
     overflow-x: hidden;
     overflow-y: hidden;
     position: relative;

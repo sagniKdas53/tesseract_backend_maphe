@@ -12,20 +12,22 @@ window.onload = function () {
     //right
     let canvastopr = document.getElementById('cTopr');
     var ctr = canvastopr.getContext('2d');
+    ctr.width = 72;
+    ctr.height = 66;
     ctr.drawImage(top_right,0,0);
     //left
     let canvastopl = document.getElementById('cTopl');
-    var ctr = canvastopl.getContext('2d');
-    ctr.drawImage(top_left,0,0);
+    var ctl = canvastopl.getContext('2d');
+    ctl.width = 75;
+    ctl.height = 78;
+    ctl.drawImage(top_left,0,0);
     //centered
     let canvascc = document.getElementById('cref');
-    var ctr = canvascc.getContext('2d');
+    var ctc = canvascc.getContext('2d');
     console.log(reff.src)
-    let tt = cv.imread(reff)
-    console.log(tt.rows);
-    ctr.width = tt.cols;
-    ctr.height = tt.rows;
-    ctr.drawImage(reff,0,0);
+    ctc.width = 99;
+    ctc.height = 339;
+    ctc.drawImage(reff,0,0);
     //made the loader will reimplement once the detector works
     //this is used by setting the visibilty once tesseract starts working and stopping
     //stopping once it's done
@@ -39,7 +41,7 @@ window.onload = function () {
         let given_im = cv.imread(imgElement);
         
         //covert canvas to mat
-        let template = canvastopr
+        let template = cv.imread(canvastopr);
         let dst = new cv.Mat();
         let mask = new cv.Mat();
         cv.matchTemplate(given_im, template, dst, cv.TM_CCOEFF, mask);
@@ -49,6 +51,7 @@ window.onload = function () {
         let point = new cv.Point(maxPoint.x + template.cols, maxPoint.y + template.rows);
         cv.rectangle(given_im, maxPoint, point, color, 2, cv.LINE_8, 0);
         cv.imshow('canvasOutput', given_im);
+        given_im.delete();
         dst.delete();
         mask.delete();
     };
