@@ -35,7 +35,7 @@
     overflow-x: hidden;
     overflow-y: hidden;
     position: relative;
-    border: 1px solid rgb(211, 173, 2)
+    border: 1px solid rgb(211, 173, 2);
 }
 
 .loader {
