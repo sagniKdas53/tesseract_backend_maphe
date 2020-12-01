@@ -5,4 +5,7 @@ images/shots
 images/temp
 node/opencv.js
 node/numjs.js
+requiremod/scripts
+requiremod/images
+tests/
 *.traineddata

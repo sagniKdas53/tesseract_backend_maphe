@@ -4,41 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Tesseract.js Offline</title>
-    <link rel="stylesheet" href="../node/style.css">
-    <script src="../node_modules/tesseract.js/dist/tesseract.min.js"></script>
-    <script>
-        function onOpenCvReady() {
-            document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
-        }
-    </script>
-    <script async src="../node/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
-    <script src="../node/detector.js"></script>
-    <script>
-        const { createWorker } = Tesseract;
-        const worker = createWorker({
-          workerPath: '../node_modules/tesseract.js/dist/worker.min.js',
-          langPath: '../lang-data',
-          corePath: '../node_modules/tesseract.js-core/tesseract-core.wasm.js',
-          logger: m => console.log(m),
-        });
-        function read_text(src, x) {
-          (async () => {
-            x.style.display = "block";
-            await worker.load();
-            await worker.loadLanguage('eng');
-            await worker.initialize('eng');
-            const { data: { text } } = await worker.recognize(src);//'../images/ocr-sample2.png');
-            console.log(text);
-            document.getElementById('mytextarea').innerHTML = text;
-            x.style.display = "none";
-          })()
-        };</script>
+    <link rel="stylesheet" href="style.css">
+    <script data-main="scripts/detector_new.js" src="scripts/require.js" type="text/javascript"></script>
 </head>
 
 <body>
     <div>
         <h1>Detector for E7</h1>
-        <h3 id="status" style="width:100%">OpenCV.js is loading...</h3>
     </div>
     <div class="img-can">
         <div class="inputoutput-cap">

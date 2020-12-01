@@ -11,8 +11,6 @@ function getDateString() {
 
 function makebox(tem, rgb, r, g, b) {
     try {
-        //const colour = "10px solid rgb("+r+","+g+","+b+")";
-        //console.log(colour);
         tem.style["border"] = "10px solid rgb(140, 255, 26)"; //colour;
         console.log("Processing ", tem, " Source ", tem.src, "Scalar colour to use:(", r, g, b, ")");
         let template = cv.imread(tem);
@@ -71,13 +69,13 @@ window.onload = function () {
     }, false);
     imgElement.onload = function () {
         let image = cv.imread(imgElement); //rgb one
-        //makebox(reff, image, 127, 31, 244); //the stats should be - purple - hopeless won't work
-        //makebox(top_left, image, 31, 244, 127); // the back arrow should be - teal - works but sometimes
-        //makebox(top_right, image, 245, 130, 32); // the lightning should be - orange - fails drastically
-        //makebox(atta,image,255,255,255); // fails drastically
-        //makebox(cd,image,255,255,255); // fails drastically
+        makebox(reff, image, 127, 31, 244); //the stats should be - purple - hopeless won't work
+        makebox(top_left, image, 31, 244, 127); // the back arrow should be - teal - works but sometimes
+        makebox(top_right, image, 245, 130, 32); // the lightning should be - orange - fails drastically
+        makebox(atta,image,255,255,255); // fails drastically
+        makebox(cd,image,255,255,255); // fails drastically
         makebox(top_left_big, image, 255, 255, 255); //works sometimes
-        //makebox(sw,image,255,255,255); // fails drastically
+        makebox(sw,image,255,255,255); // fails drastically
         // fails drastically means misses the region by a lot the plot still occures but not where it's needed
         cv.imshow('canvasOutput', image);
         image.delete();
