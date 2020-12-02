@@ -68,17 +68,78 @@ window.onload = function () {
         imgElement.src = URL.createObjectURL(e.target.files[0]);
     }, false);
     imgElement.onload = function () {
-        let image = cv.imread(imgElement); //rgb one
-        makebox(reff, image, 127, 31, 244); //the stats should be - purple - hopeless won't work
-        makebox(top_left, image, 31, 244, 127); // the back arrow should be - teal - works but sometimes
-        makebox(top_right, image, 245, 130, 32); // the lightning should be - orange - fails drastically
-        makebox(atta,image,255,255,255); // fails drastically
-        makebox(cd,image,255,255,255); // fails drastically
-        makebox(top_left_big, image, 255, 255, 255); //works sometimes
-        makebox(sw,image,255,255,255); // fails drastically
-        // fails drastically means misses the region by a lot the plot still occures but not where it's needed
+        let image_full = cv.imread(imgElement); //rgb one
+        let image = new cv.Mat();
+        // idk about the x and y coordinates but i assume rows=> y, cols=> x
+        const y = Math.round(image_full.rows);
+        const x = Math.round(image_full.cols / 2);
+        console.log(x, y);
+        let rect = new cv.Rect(00, 00, x, y);
+        image = image_full.roi(rect);
         cv.imshow('canvasOutput', image);
         image.delete();
+        image_full.delete();
+        // SAD template matching test
+        let coordinates = SAD(imgElement,top_right,"tempc");
+        console.log(coordinates);
     };
 }
 
+function loadImage(imageUrl, canvasElement) {
+    let context = canvasElement.getContext('2d');
+    let image = new Image();
+    image.src = imageUrl;
+    image.onload = () => {
+        canvasElement.width = image.width;
+        canvasElement.height = image.height;
+        context.drawImage(image, 0, 0, image.width, image.height);
+    };
+};
+
+function SAD(Src, Tem, id) {
+    console.log(Src, Tem, id);
+    let can = document.getElementById(id);
+    loadImage(Tem.src, can);
+    let S_w = Src.width;
+    let S_h = Src.height;
+    let T_w = Tem.width;
+    let T_h = Tem.height;
+    console.log(S_w, S_h, T_w, T_h);
+    let templateContext = can.getContext('2d'); 
+    let T = templateContext.getImageData(0, 0, T_w, T_h).data;
+    let originalContext = Src.getContext('2d');
+    let S = originalContext.getImageData(0, 0, S_w, S_h).data;
+    // this part is kept same the previous lines are patched in by me.
+    let minSAD = Number.MAX_SAFE_INTEGER;
+    let posX;
+    let posY;
+    for (let y = 0; y <= S_h - T_h; y++) {
+        for (let x = 0; x <= S_w - T_w; x++) {
+            let SAD = 0;
+            // loop through template image data.
+            for (let j = 0; j < T_h; j++) {
+                let S_idx = (y + j) * S_w;
+                let T_idx = j * T_w;
+                for (let i = 0; i < T_w; i++) {
+                    let S_idx_i = (S_idx + (x + i)) * 4;
+                    let T_idx_i = (T_idx + i) * 4;
+                    let S_pixel = S[S_idx_i];   // using R(ed) component.
+                    let T_pixel = T[T_idx_i];   // using R(ed) component.
+                    SAD += Math.abs(S_pixel - T_pixel);
+                }
+            }
+            if (minSAD > SAD) {
+                minSAD = SAD;
+                posX = x;
+                posY = y;
+            }
+        }
+    }
+    console.log(posX);
+    console.log(posY);
+    //originalContext.beginPath();
+    //originalContext.rect(pos.x, pos.y, templateCanvas.width, templateCanvas.height);
+    //originalContext.strokeStyle = 'red';
+    //originalContext.stroke();
+    return { x: posX, y: posY };
+}
