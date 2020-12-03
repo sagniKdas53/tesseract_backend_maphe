@@ -97,6 +97,7 @@ function loadImage(imageUrl, canvasElement) {
 };
 
 function SAD(Src, Tem, id) {
+    console.log("Fucking SAD");
     console.log(Src, Tem, id);
     let can = document.getElementById(id);
     loadImage(Tem.src, can);

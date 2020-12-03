@@ -38,6 +38,15 @@
     border: 1px solid rgb(211, 173, 2);
 }
 
+.sizetemc {
+    max-width:2%;
+    max-height:2%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+    border: 10px solid rgb(130, 250, 10);
+}
+
 .loader {
     float: right;
     border: 16px solid #000000;
