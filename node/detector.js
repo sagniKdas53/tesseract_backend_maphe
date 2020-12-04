@@ -80,7 +80,7 @@ window.onload = function () {
         image.delete();
         image_full.delete();
         // SAD template matching test
-        let coordinates = SAD(imgElement,top_right,"tempc");
+        let coordinates = SAD(document.getElementById("canvasOutput"),top_right,"tempc");
         console.log(coordinates);
     };
 }
@@ -136,11 +136,11 @@ function SAD(Src, Tem, id) {
             }
         }
     }
-    console.log(posX);
-    console.log(posY);
-    //originalContext.beginPath();
-    //originalContext.rect(pos.x, pos.y, templateCanvas.width, templateCanvas.height);
-    //originalContext.strokeStyle = 'red';
-    //originalContext.stroke();
+    document.getElementById('x_cordd').innerHTML = "X: "+posX;
+    document.getElementById('y_cordd').innerHTML = "Y:"+posY;
+    originalContext.beginPath();
+    originalContext.rect(posX, posY, T_w, T_h);
+    originalContext.strokeStyle = 'red';
+    originalContext.stroke();
     return { x: posX, y: posY };
 }
