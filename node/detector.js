@@ -71,17 +71,20 @@ window.onload = function () {
         let image_full = cv.imread(imgElement); //rgb one
         let image = new cv.Mat();
         // idk about the x and y coordinates but i assume rows=> y, cols=> x
+        //const begin = Math.round(image_full.rows*0.07)  used only if black bar is present
+        //console.log(begin);
+        const begin = 00;
         const y = Math.round(image_full.rows);
         const x = Math.round(image_full.cols / 2);
         console.log(x, y);
-        let rect = new cv.Rect(00, 00, x, y);
+        let rect = new cv.Rect(begin, 00, x, y);
         image = image_full.roi(rect);
         cv.imshow('canvasOutput', image);
         image.delete();
         image_full.delete();
         // SAD template matching test
-        let coordinates = SAD(document.getElementById("canvasOutput"),top_right,"tempc");
-        console.log(coordinates);
+        //SAD(document.getElementById("canvasOutput"),top_right,"tempc");
+        SAD(document.getElementById("canvasOutput"),atta,"tempc");
     };
 }
 
@@ -97,7 +100,6 @@ function loadImage(imageUrl, canvasElement) {
 };
 
 function SAD(Src, Tem, id) {
-    console.log("Fucking SAD");
     console.log(Src, Tem, id);
     let can = document.getElementById(id);
     loadImage(Tem.src, can);
@@ -142,5 +144,4 @@ function SAD(Src, Tem, id) {
     originalContext.rect(posX, posY, T_w, T_h);
     originalContext.strokeStyle = 'red';
     originalContext.stroke();
-    return { x: posX, y: posY };
 }
