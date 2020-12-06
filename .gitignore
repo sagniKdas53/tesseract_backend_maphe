@@ -3,6 +3,7 @@ tests/browser.7z
 lang-data/
 images/shots
 images/temp
+images/results
 node/opencv.js
 node/numjs.js
 requiremod/scripts

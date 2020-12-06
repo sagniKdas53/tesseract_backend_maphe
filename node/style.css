@@ -18,6 +18,18 @@
     top: 0px;
 }
 
+.template_parent{
+    border: 3px solid rgb(255, 61, 61);
+    padding: 20px;
+}
+
+.template_block{
+    height: 5%;
+    width: 5%;
+    float : left;
+    border: 1px solid rgb(215, 0, 235);
+}
+
 .size {
     height: 95%;
     width: 99%;
@@ -29,22 +41,22 @@
 }
 
 
-.sizetem {
+.style_template {
     max-width:2%;
     max-height:2%;
     overflow-x: hidden;
     overflow-y: hidden;
     position: relative;
-    border: 1px solid rgb(211, 173, 2);
+    border: 1px solid rgb(1, 235, 118);
 }
 
-.sizetemc {
+.style_template_canvas {
     max-width:2%;
     max-height:2%;
     overflow-x: hidden;
     overflow-y: hidden;
     position: relative;
-    border: 10px solid rgb(130, 250, 10);
+    border: 10px solid rgb(250, 214, 10);
 }
 
 .loader {
