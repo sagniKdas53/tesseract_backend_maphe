@@ -88,9 +88,9 @@ window.onload = function () {
         let image_full = cv.imread(main_image_ele); //rgb one
         let image = new cv.Mat();
         // idk about the x and y coordinates but i assume rows=> y, cols=> x
-        //const begin = Math.round(image_full.rows*0.07)  used only if black bar is present
+        const begin = Math.round(image_full.rows*0.07)  //used only if black bar is present
         //console.log(begin);
-        const begin = 00;
+        //const begin = 00;
         const y = Math.round(image_full.rows);
         const x = Math.round(image_full.cols / 2);
         //console.log(x, y);
@@ -102,21 +102,27 @@ window.onload = function () {
 
         if (usage_stat_cb.checked === true) {
             SAD(document.getElementById("output_canavs"), usage_stat_ele, "template_canvas");
+            return;
         }
         if (back_arrow_cb.checked === true) {
             SAD(document.getElementById("output_canavs"), back_arrow_ele, "template_canvas");
+            return;
         }
         if (stats_box_cb.checked === true) {
             SAD(document.getElementById("output_canavs"), stats_box_ele, "template_canvas");
+            return;
         }
         if (attack_icon_cb.checked === true) {
             SAD(document.getElementById("output_canavs"), attack_icon_ele, "template_canvas");
+            return;
         }
         if (critdam_icon_cb.checked === true) {
             SAD(document.getElementById("output_canavs"), critdam_icon_ele, "template_canvas");
+            return;
         }
         if (crossed_swo_cb.checked === true) {
             SAD(document.getElementById("output_canavs"), crossed_swo_ele, "template_canvas");
+            return;
         }
     };
 }
