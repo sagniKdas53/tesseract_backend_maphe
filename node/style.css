@@ -19,15 +19,13 @@
 }
 
 .template_parent{
-    border: 3px solid rgb(255, 255, 255);
-    padding: 20px;
+    display: inline-block; 
+    border: 3px solid rgb(168, 168, 168);
 }
 
 .template_block{
-    height: 5%;
-    width: 5%;
     float : left;
-    border: 1px solid rgb(255, 255, 255);
+    border: 1px solid rgb(165, 165, 165);
 }
 
 .size {
@@ -56,27 +54,23 @@
 }
 
 .output_area{
-    margin: 1px solid rgb(189, 189, 189); 
+    margin: 1px solid rgb(124, 124, 124); 
     height: 240px; 
     width: 90%;
 }
 
 .style_template {
-    max-width:2%;
-    max-height:2%;
     overflow-x: hidden;
     overflow-y: hidden;
     position: relative;
-    border: 1px solid rgb(255, 255, 255);
+    border: 1px solid rgb(255, 212, 162);
 }
 
 .style_template_canvas {
-    max-width:2%;
-    max-height:2%;
     overflow-x: hidden;
     overflow-y: hidden;
     position: relative;
-    border: 10px solid rgb(255, 255, 255);
+    border: 1px solid rgb(255, 163, 163);
 }
 
 .loader {
