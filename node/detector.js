@@ -43,7 +43,11 @@ function DownloadCanvasAsImage() {
 window.onload = function () {
     //getting the images
     let imgElement = document.getElementById('imageSrc');
+    let chbox1 = document.getElementById('TopLc');
+    console.log(chbox1.value);
     let top_right = document.getElementById('Topr'); //the lightning shield one
+    let chbox2 = document.getElementById('TopRc');
+    console.log(chbox2.value);
     let top_left = document.getElementById('Topl');
     let reff = document.getElementById('ref');
     let atta = document.getElementById('att');
@@ -76,7 +80,7 @@ window.onload = function () {
         const begin = 00;
         const y = Math.round(image_full.rows);
         const x = Math.round(image_full.cols / 2);
-        console.log(x, y);
+        //console.log(x, y);
         let rect = new cv.Rect(begin, 00, x, y);
         image = image_full.roi(rect);
         cv.imshow('canvasOutput', image);
@@ -84,11 +88,11 @@ window.onload = function () {
         image_full.delete();
         // SAD template matching test
         //SAD(document.getElementById("canvasOutput"),top_right,"tempc");
-        SAD(document.getElementById("canvasOutput"),atta,"tempc");
+        SAD(document.getElementById("canvasOutput"),top_left_big,"tempc");
     };
 }
 
-function loadImage(imageUrl, canvasElement) {
+function loadImageToCanvas(imageUrl, canvasElement) {
     let context = canvasElement.getContext('2d');
     let image = new Image();
     image.src = imageUrl;
@@ -100,14 +104,14 @@ function loadImage(imageUrl, canvasElement) {
 };
 
 function SAD(Src, Tem, id) {
-    console.log(Src, Tem, id);
+    //console.log(Src, Tem, id);
     let can = document.getElementById(id);
-    loadImage(Tem.src, can);
+    loadImageToCanvas(Tem.src, can);
     let S_w = Src.width;
     let S_h = Src.height;
     let T_w = Tem.width;
     let T_h = Tem.height;
-    console.log(S_w, S_h, T_w, T_h);
+    //console.log(S_w, S_h, T_w, T_h);
     let templateContext = can.getContext('2d'); 
     let T = templateContext.getImageData(0, 0, T_w, T_h).data;
     let originalContext = Src.getContext('2d');
