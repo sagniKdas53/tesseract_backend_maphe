@@ -1,5 +1,0 @@
-let result = cv.minMaxLoc(dst, mask);
-let maxPoint = result.maxLoc;
-let color = new cv.Scalar(255, 0, 0, 255);
-let point = new cv.Point(maxPoint.x + templ.cols, maxPoint.y + templ.rows);
-cv.rectangle(src, maxPoint, point, color, 2, cv.LINE_8, 0);
