@@ -1,96 +1,161 @@
+import sys
+import os
+import getopt
 import cv2 as cv
 import numpy as np
 
 
-def crop():
+def crop(out, loc_l, loc_r, hi, img_rgb):
     x_s = np.amax(loc_r[0])
     xs = np.amin(loc_l[0])
-    ys = np.amin(loc_r[1]) # also use as x end
+    ys = np.amin(loc_r[1])  # also use as x end
     ye = hi
-    print(x_s,":",ye,',',xs,":",x_s,)
-    crop_img = img_rgb[x_s:ye,xs:ys] #add the dimensions later
+    print(x_s, ":", ye, ',', xs, ":", x_s,)
+    crop_img = img_rgb[x_s:ye, xs:ys]  # add the dimensions later
     #cv.imshow("Final Crop",crop_img)
-    #cv.waitKey(0)
-    cv.imwrite('/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/temp/cropped.png', crop_img)
+    # cv.waitKey(0)
+    cv.imwrite(out+"_cropped.png", crop_img)
 
 
-def point_pixels():
+def point_pixels(out, img_rgb, loc_r, loc_l, wr, hl):
     mod_img = img_rgb
     # x coordinate range start: end,y coordinates range start: end
     right_corr_x_m = np.amax(loc_r[0])
     right_corr_y_m = np.amax(loc_r[1])
-    mod_img[right_corr_x_m + wr:right_corr_x_m + 20 + wr, right_corr_y_m + wr:right_corr_y_m + 20 + wr] = [255,212,0]
-    #supposed to the bottom box on top left -- FFD400 - yellow
+    mod_img[right_corr_x_m + wr:right_corr_x_m + 20 + wr,
+            right_corr_y_m + wr:right_corr_y_m + 20 + wr] = [255, 212, 0]
+    # supposed to the bottom box on top left -- FFD400 - yellow
     right_corr_x = np.amin(loc_r[0])
     right_corr_y = np.amin(loc_r[1])
-    mod_img[right_corr_x:right_corr_x + 20, right_corr_y:right_corr_y + 20] = [107,35,143]
-    #supposed to be the top box on top right -- 6B238F - purple
+    mod_img[right_corr_x:right_corr_x + 20,
+            right_corr_y:right_corr_y + 20] = [107, 35, 143]
+    # supposed to be the top box on top right -- 6B238F - purple
     left_corr_x_m = np.amax(loc_l[0])
     left_corr_y_m = np.amax(loc_l[1])
-    mod_img[left_corr_x_m + hl:left_corr_x_m + 20 + hl, left_corr_y_m + hl:left_corr_y_m + 20 + hl] = [0,234,255]
-    #supposed to be the bottom box on top right -- 00EAFF - sky blue
+    mod_img[left_corr_x_m + hl:left_corr_x_m + 20 + hl,
+            left_corr_y_m + hl:left_corr_y_m + 20 + hl] = [0, 234, 255]
+    # supposed to be the bottom box on top right -- 00EAFF - sky blue
     left_corr_x = np.amin(loc_l[0])
     left_corr_y = np.amin(loc_l[1])
-    mod_img[left_corr_x:left_corr_x + 20, left_corr_y:left_corr_y + 20] = [204,204,204]
-    #supposed to be the top box on top left -- CCCCCC - white
-    cv.imwrite('/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/temp/red_region.png', mod_img)
+    mod_img[left_corr_x:left_corr_x + 20,
+            left_corr_y:left_corr_y + 20] = [204, 204, 204]
+    # supposed to be the top box on top left -- CCCCCC - white
+    cv.imwrite(out+'_red_region.png', mod_img)
 
 
-def make_rect():
+def make_rect(out, loc_r, img_rgb, wr, hr, hi, loc_l, wl, hl):
     for pt in zip(*loc_r[::-1]):
         cv.rectangle(img_rgb, pt, (pt[0] + wr, pt[1] + hr), (0, 0, 255), 2)
-        cv.rectangle(img_rgb, pt, (pt[0] + wr + hi, pt[1] + hr + hi), (0, 0, 255), 2)
+        cv.rectangle(img_rgb, pt, (pt[0] + wr +
+                     hi, pt[1] + hr + hi), (0, 0, 255), 2)
     for pt in zip(*loc_l[::-1]):
         cv.rectangle(img_rgb, pt, (pt[0] + wl, pt[1] + hl), (0, 0, 255), 2)
-        cv.rectangle(img_rgb, pt, (pt[0] + wl + hi, pt[1] + hl + hi), (0, 0, 255), 2)
-    cv.imwrite('/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/temp/squared_output.png', img_rgb)
+        cv.rectangle(img_rgb, pt, (pt[0] + wl +
+                     hi, pt[1] + hl + hi), (0, 0, 255), 2)
+    cv.imwrite(out+'_squared_output.png', img_rgb)
 
 
-def verbose():
+'''def verbose():
     print('\n', loc_l, '\n\n', loc_r)
-    print(loc_l[0][0], '\n', loc_r[0][0], '\n', hi, '\n', hi)
+    print(loc_l[0][0], '\n', loc_r[0][0], '\n', hi, '\n', hi)'''
 
-def locate_data():
-    tempF = cv.imread('/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/templates/necessary_col.jpg',0)
-    det_im = cv.imread('/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/temp/cropped.png')
+
+def locate_data(out, threshold, templateTomatch):
+    print(templateTomatch, '\n', out+'_cropped.png')
+    tempF = cv.imread(templateTomatch, 0)
+    # out+'_cropped.png')
+    det_im = cv.imread(
+        '/home/sagnik/Projects/tesseract_backend_maphe/tests/outfile_cropped.png')
     img_gr = cv.cvtColor(det_im, cv.COLOR_BGR2GRAY)
     res = cv.matchTemplate(img_gr, tempF, cv.TM_CCOEFF_NORMED)
-    loc = np.where(res >= threshold)
-    w, h = tempF.shape[::-1]
-    x_m = np.amax(loc[0])
-    y_m = np.amax(loc[1])
+    '''cv.imshow("image", img_gr)
+    cv.waitKey(0)
+    cv.imshow("image", tempF)
+    cv.waitKey(0)
+    cv.imshow("image", res)
+    cv.waitKey(0)'''
+    try:
+        for i in range(0, 10):
+            print("threshold = ", i/10)
+            loc = np.where(res >= i/10)
+            w, h = tempF.shape[::-1]
+            x_m = np.amax(loc[0])
+            y_m = np.amax(loc[1])
+    except ValueError:
+        i-=1
+        print("threshold too high, trying a last accepatble value=",i/10)
+        loc = np.where(res >= i/10)
+        w, h = tempF.shape[::-1]
+        x_m = np.amax(loc[0])
+        y_m = np.amax(loc[1])
     #x_n = np.amin(loc[0])
     #ye = np.amin(loc[1])
     #print(x_m, y_m, x_n, ye,h,w)
     crop_img = det_im[x_m:x_m+h, y_m:y_m+w]
     #cv.imshow("cropped", crop_img)
-    #cv.waitKey(0)
-    cv.imwrite('/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/temp/squared_output_res.png', crop_img)
+    # cv.waitKey(0)
+    cv.imwrite(out+'_squared_output_res.png', crop_img)
     img_gr = cv.cvtColor(crop_img, cv.COLOR_BGR2GRAY)
-    cv.imwrite('/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/temp/squared_output_res_grey.png', img_gr)
+    cv.imwrite(out+'_squared_output_res_grey.png', img_gr)
 
 
-file = '/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/shots/left_hidden,decrease_stat,some_other_true.jpg'
-original_im = cv.imread(file, 0)
-img_rgb = cv.imread(file)
-print(img_rgb.shape)
-img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
-templatel = cv.imread('/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/templates/top_left.jpg', 0)
-templater = cv.imread('/home/sagnik/Vs Code/maphe.github.io/tesseract.js-offline-master/images/templates/top_right.jpg', 0)
-wi, hi = original_im.shape[::-1]
-wl, hl = templatel.shape[::-1]
-wr, hr = templater.shape[::-1]
-resl = cv.matchTemplate(img_gray, templatel, cv.TM_CCOEFF_NORMED)
-resr = cv.matchTemplate(img_gray, templater, cv.TM_CCOEFF_NORMED)
-threshold = 0.8
-loc_l = np.where(resl >= threshold)
-loc_r = np.where(resr >= threshold)
+def main(argv):
+    cwd = os.getcwd()
+    inputfile = ''
+    outputfile = ''
+    try:
+        opts, args = getopt.getopt(argv, "hi:o:", ["if=", "of="])
+    except getopt.GetoptError:
+        print('detector.py -i <inputfile> -o <outputfile>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print('detector.py -i <inputfile> -o <outputfile>')
+            sys.exit()
+        elif opt in ("-i", "--if"):
+            inputfile = arg
+        elif opt in ("-o", "--of"):
+            outputfile = arg
+    print(inputfile, outputfile)
+    file = inputfile
+    original_im = cv.imread(file, 0)
+    img_rgb = cv.imread(file)
+    print(img_rgb.shape)
+    img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
+    print(cwd+'/templates/')
+    templatel = cv.imread(cwd+'/templates/top_left.jpg', 0)
+    templater_active = cv.imread(
+        cwd+'/templates/top_right_swords_active.jpg', 0)
+    templater_in_active = cv.imread(
+        cwd+'/templates/top_right_swords_inactive.jpg', 0)
+    template = cv.imread(cwd+'/templates/necessary_col.jpg', 0)
+    template_to_match = cwd+'/templates/necessary_col.jpg'
+    print(template, '\n', templatel, '\n',
+          templater_in_active, '\n', templater_active)
+    wi, hi = original_im.shape[::-1]
+    wl, hl = templatel.shape[::-1]
+    wr, hr = templater_active.shape[::-1]
+    resl = cv.matchTemplate(img_gray, templatel, cv.TM_CCOEFF_NORMED)
+    resr = cv.matchTemplate(img_gray, templater_active, cv.TM_CCOEFF_NORMED)
+    threshold = 0.8
+    loc_l = np.where(resl >= threshold)
+    loc_r = np.where(resr >= threshold)
+    try:
+        print('\nloc_l:', loc_l, '\n\nloc_r:', loc_r)
+        print(loc_l[0][0], '\n', loc_r[0][0], '\n', hi, '\n', hi)
+        #templater = templater_active
+    except IndexError:
+        wr, hr = templater_in_active.shape[::-1]
+        resr = cv.matchTemplate(
+            img_gray, templater_in_active, cv.TM_CCOEFF_NORMED)
+        loc_r = np.where(resr >= threshold)
+        print(loc_l[0][0], '\n', loc_r[0][0], '\n', hi, '\n', hi)
+        #templater = templater_in_active
+    point_pixels(outputfile,img_rgb,loc_r,loc_l,wr,hl)
+    make_rect(outputfile,loc_r,img_rgb,wr,hr,hi,loc_l,wl,hl)
+    crop(outputfile,loc_l,loc_r,hi,img_rgb)
+    locate_data(outputfile, threshold, template_to_match)
 
-verbose()
-point_pixels()
-make_rect()
-crop()
-locate_data()
 
-
-
+if __name__ == "__main__":
+    main(sys.argv[1:])
